@@ -1,59 +1,98 @@
-# McpDashboard
+# MCP Client Dashboard
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.8.
+An Angular 20 single-page application for managing Model Context Protocol (MCP) servers. The dashboard provides secure authentication, JWT-aware routing, and a responsive PrimeNG UI for monitoring registered servers at a glance.
 
-## Development server
+## Features
 
-To start a local development server, run:
+- Login flow backed by JWT authentication with automatic session expiry handling.
+- Protected server listing with rich status indicators, manual refresh, and logout actions.
+- Standalone Angular components with lazy-loaded routes for optimal bundle sizes.
+- Centralized Axios configuration that injects auth headers and reacts to 401 responses.
+- Tailored styling using PrimeNG components and custom CSS for dark themed dashboards.
 
-```bash
-ng serve
-```
+## Tech Stack
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- [Angular 20](https://angular.dev/)
+- [PrimeNG 17](https://primeng.org/) for UI components
+- [Axios](https://axios-http.com/) for HTTP requests
+- TypeScript, SCSS, and the new `@angular/build` application builder
 
-## Code scaffolding
+## Prerequisites
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Node.js 18.19+ or 20.x
+- npm 9+ (bundled with Node)
+- Access to an MCP backend exposing REST endpoints (defaults to `http://localhost:8080/api`)
 
-```bash
-ng generate component component-name
-```
+## Environment Variables
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+Environment values are loaded via `.env` files at build/serve time. Copy the example file and adjust as needed:
 
 ```bash
-ng build
+cp .env.example .env.local
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+| Name              | Description                                          | Default                    |
+| ----------------- | ---------------------------------------------------- | -------------------------- |
+| `NG_APP_API_URL`  | Base URL for the MCP API used by the dashboard.      | `http://localhost:8080/api` |
 
-## Running unit tests
+> Files named `.env`, `.env.local`, or `.env.*` are ignored by Git. Use `.env.local` for machine-specific overrides.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Getting Started
 
-```bash
-ng test
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Create a local env file**
+   ```bash
+   cp .env.example .env.local
+   # edit .env.local if your API is not running on the default URL
+   ```
+
+3. **Run the MCP API (required)**  
+   Ensure the backend is reachable at the URL specified in `NG_APP_API_URL`.
+
+4. **Start the dev server**
+   ```bash
+   npm start
+   ```
+   The app runs at [http://localhost:4200](http://localhost:4200) with hot reload.
+
+## Useful npm Scripts
+
+| Command          | Description                               |
+| ---------------- | ----------------------------------------- |
+| `npm start`      | Serve the app in development mode.        |
+| `npm run build`  | Produce an optimized production build.    |
+| `npm run watch`  | Rebuild on file changes (development).    |
+| `npm test`       | Execute unit tests with Karma.            |
+
+## Project Structure
+
+```
+src/
+├─ app/
+│  ├─ auth/             # Login component, auth service, guards
+│  ├─ core/interceptors # Axios setup and global HTTP interceptors
+│  ├─ servers/          # Server list feature module
+│  ├─ app.routes.ts     # Standalone lazy routes
+│  └─ app.ts            # Root component bootstrapped via main.ts
+├─ environments/        # Environment configuration
+└─ main.ts              # Angular bootstrap entry point
 ```
 
-## Running end-to-end tests
+## Testing & Builds
 
-For end-to-end (e2e) testing, run:
+- **Unit tests**: `npm test`
+- **Production build**: `npm run build` (artifacts emitted to `dist/mcp-dashboard`)
 
-```bash
-ng e2e
-```
+## Troubleshooting
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+- If you see a blank page or immediate redirect to the login screen, the JWT token is missing or expired—log in again.
+- A 401 response from the API automatically clears the session and returns you to `/login`.
+- Verify the API base URL in `.env.local` if network requests fail.
 
-## Additional Resources
+## License
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+This project is currently distributed for internal use. Add licensing details if required.
