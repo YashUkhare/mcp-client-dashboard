@@ -1,0 +1,60 @@
+<div class="login-wrapper">
+  <div class="login-container">
+    <div class="login-copy">
+      <h1>Welcome back</h1>
+      <p>
+        Sign in to continue to your MCP Client Dashboard, review server activity, and keep your tools
+        connected.
+      </p>
+    </div>
+
+    <p-card class="login-card">
+      <form (ngSubmit)="onLogin()" class="login-form">
+        <div class="login-header">
+          <h2 class="login-title">Sign in</h2>
+          <p class="login-subtitle">Use your MCP credentials to access the dashboard.</p>
+        </div>
+
+        <div class="field">
+          <label for="username">Username</label>
+          <input
+            id="username"
+            pInputText
+            [(ngModel)]="username"
+            name="username"
+            autocomplete="username"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            pPassword
+            [(ngModel)]="password"
+            name="password"
+            autocomplete="current-password"
+            required
+          />
+        </div>
+
+        <div class="login-actions">
+          <small class="text-muted">Default admin credentials: jimmy / jimmy@123</small>
+          <button
+            pButton
+            type="submit"
+            icon="pi pi-sign-in"
+            label="{{ loading ? 'Signing in...' : 'Sign in' }}"
+            [disabled]="loading"
+            [loading]="loading"
+          ></button>
+        </div>
+
+        <div class="error-message" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+      </form>
+    </p-card>
+  </div>
+</div>
